@@ -69,6 +69,25 @@
         { "@type": "MusicRecording", "name": "Circuit", "alternateName": "مدار", "duration": "PT1M30S", "byArtist": { "@type": "MusicGroup", "name": "Felani4F" } }
       ]
     }
+  ,
+    {
+      "@type": "MusicAlbum",
+      "@id": "https://drserver2350.github.io/felani4f/#album",
+      "name": "Felani4F · Vol.01",
+      "albumProductionType": "https://schema.org/StudioAlbum",
+      "byArtist": { "@type": "MusicGroup", "name": "Felani4F", "alternateName": "فلانی فور اف" },
+      "numTracks": 5,
+      "datePublished": "2026-01-01",
+      "image": "https://drserver2350.github.io/felani4f/assets/img/og.jpg",
+      "url": "https://drserver2350.github.io/felani4f/#library",
+      "track": [
+        { "@type": "MusicRecording", "name": "Orbit Zero", "alternateName": "مدار صفر", "duration": "PT2M25S", "genre": "الکترونیک", "audio": "https://drserver2350.github.io/felani4f/assets/audio/orbit-zero.mp3", "image": "https://drserver2350.github.io/felani4f/assets/img/orbit-zero.jpg" },
+        { "@type": "MusicRecording", "name": "Neon Night", "alternateName": "شب نئون", "duration": "PT2M09S", "genre": "الکترونیک", "audio": "https://drserver2350.github.io/felani4f/assets/audio/neon-night.mp3", "image": "https://drserver2350.github.io/felani4f/assets/img/neon-night.jpg" },
+        { "@type": "MusicRecording", "name": "Dusk", "alternateName": "غروب", "duration": "PT2M03S", "genre": "الکترونیک", "audio": "https://drserver2350.github.io/felani4f/assets/audio/dusk.mp3", "image": "https://drserver2350.github.io/felani4f/assets/img/dusk.jpg" },
+        { "@type": "MusicRecording", "name": "Glass", "alternateName": "شیشه", "duration": "PT1M50S", "genre": "الکترونیک", "audio": "https://drserver2350.github.io/felani4f/assets/audio/glass.mp3", "image": "https://drserver2350.github.io/felani4f/assets/img/glass.jpg" },
+        { "@type": "MusicRecording", "name": "Circuit", "alternateName": "مدار", "duration": "PT1M30S", "genre": "الکترونیک", "audio": "https://drserver2350.github.io/felani4f/assets/audio/circuit.mp3", "image": "https://drserver2350.github.io/felani4f/assets/img/circuit.jpg" }
+      ]
+    }
   ]
 }
 </script>
@@ -110,6 +129,13 @@
   <symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="m6.4 17.6 11.2-11.2" stroke="currentColor" stroke-width="1.6"/></symbol>
   <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.6" r="3.4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2.8 19.4c.6-3 3-4.8 6.2-4.8s5.6 1.8 6.2 4.8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M16 5.6a3.2 3.2 0 0 1 0 6M18.4 14.8c1.7.5 2.9 1.9 3.3 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
   <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19.2h16M7 16V9.6M12 16V5.4M17 16v-4.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3.4 7.2h2.8c1.2 0 2.4.6 3.1 1.6l5.4 6.4c.7 1 1.9 1.6 3.1 1.6h2.8M16.4 4.4l3.2 2.8-3.2 2.8M16.4 13.6l3.2 2.8-3.2 2.8M3.4 16.8h2.8c1.2 0 2.2-.5 2.9-1.4l1.2-1.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M7.2 6.4h9.4a3.4 3.4 0 0 1 3.4 3.4v2.4M17 4.2l2.6 2.2L17 8.6M16.8 17.6H7.4A3.4 3.4 0 0 1 4 14.2v-2.4M7 19.8l-2.6-2.2L7 15.4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-repeat1" viewBox="0 0 24 24"><path d="M7.2 6.4h9.4a3.4 3.4 0 0 1 3.4 3.4v2.4M17 4.2l2.6 2.2L17 8.6M16.8 17.6H7.4A3.4 3.4 0 0 1 4 14.2v-2.4M7 19.8l-2.6-2.2L7 15.4M12.2 10.6l1.2-.8v4.4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-queue" viewBox="0 0 24 24"><path d="M3.6 7h11M3.6 12h11M3.6 17h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M17.4 13.6v5.2l4-2.6z" fill="currentColor"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9.4 6 6 6-6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.4" y="4.8" width="17.2" height="14.4" rx="2.6" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="8.8" cy="9.6" r="1.7" fill="currentColor"/><path d="m4.6 17.4 4.6-4.2 3.2 2.8 2.6-2.4 4.4 3.8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4.4 9.2V5.8c0-.8.6-1.4 1.4-1.4h3.4M14.8 4.4h3.4c.8 0 1.4.6 1.4 1.4v3.4M19.6 14.8v3.4c0 .8-.6 1.4-1.4 1.4h-3.4M9.2 19.6H5.8c-.8 0-1.4-.6-1.4-1.4v-3.4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 
 <!-- ============ PRELOADER ============ -->
@@ -193,13 +219,13 @@
     <div class="hero-bg-grad" aria-hidden="true"></div>
     <div class="wrap hero-in">
       <div class="hero-l">
-        <div class="eyebrow rv"><span class="pulse"></span> <b>لیبل مستقل صوتی</b> <span class="en" style="color:var(--dim)">VOL.01 / 2026</span></div>
+        <div class="eyebrow rv"><span class="pulse"></span> <b>لیبل مستقل صوتی <span class="en">Felani4F</span></b> <span class="en" style="color:var(--dim)">VOL.01 / 2026</span></div>
         <h1 class="rv" style="--d:.08s">
           <span class="l1">فلانی <span class="grad">4F</span>؛</span>
           <span class="l1">صدا، <em>بی‌واسطه</em>.</span>
         </h1>
         <p class="lead rv" style="--d:.16s">
-          ترک‌هایی که در اتاق کوچک ما ساخته می‌شوند و مستقیم به گوش تو می‌رسند.
+          در <b class="en">Felani4F</b> ترک‌هایی ساخته می‌شوند که مستقیم به گوش تو می‌رسند.
           بشنو، با کیفیت کامل دانلود کن، حساب بساز و بگو چه حسی داشت — نظرت اینجا می‌ماند.
         </p>
         <div class="hero-cta rv" style="--d:.24s">
@@ -423,11 +449,12 @@
 <!-- ============ PLAYER DOCK ============ -->
 <div class="dock" id="dock" role="region" aria-label="پخش‌کننده">
   <div class="dock-in">
-    <div class="dk-cover">
+    <i class="dk-line" id="dkLine" aria-hidden="true"></i>
+    <div class="dk-cover" id="dkMeta">
       <img id="dkCover" src="assets/img/orbit-zero-sm.jpg" alt="" width="52" height="52">
       <span class="din"><svg style="width:14px;height:14px;position:absolute;inset:0;margin:auto;color:#fff"><use href="#i-wave"/></svg></span>
     </div>
-    <div class="mid">
+    <div class="mid" id="dkInfo">
       <div class="mid-top">
         <b id="dkTitle">—</b>
         <span id="dkSub">Felani4F</span>
@@ -448,12 +475,78 @@
       </div>
       <button class="cbtn" id="dkCm" aria-label="نظرها"><svg><use href="#i-comment"/></svg></button>
       <button class="cbtn" id="dkDl" aria-label="دانلود"><svg><use href="#i-download"/></svg></button>
+      <button class="cbtn" id="dkExpand" aria-label="پخش‌کننده‌ی تمام‌صفحه"><svg><use href="#i-expand"/></svg></button>
       <button class="cbtn" id="dkOpen" aria-label="جزئیات ترک"><svg><use href="#i-arrow"/></svg></button>
     </div>
     <button class="dk-close" id="dkClose" aria-label="بستن پخش‌کننده"><svg><use href="#i-close"/></svg></button>
   </div>
 </div>
 <audio id="audio" preload="none"></audio>
+
+<!-- ============ NOW PLAYING SHEET ============ -->
+<div class="np" id="np" role="dialog" aria-modal="true" aria-label="در حال پخش" aria-hidden="true">
+  <div class="np-panel" id="npPanel">
+    <div class="np-bg" id="npBg"></div>
+    <video class="np-video" id="npVideo" src="assets/video/embers.mp4" poster="assets/video/emb-poster.jpg" muted loop playsinline preload="none" aria-hidden="true"></video>
+    <div class="np-shade"></div>
+
+    <header class="np-head" id="npHead">
+      <button class="np-grab" id="npGrab" aria-label="بستن پخش‌کننده"><span></span></button>
+      <div class="np-where"><svg aria-hidden="true"><use href="#i-wave"/></svg><span>در حال پخش</span></div>
+      <button class="np-x" id="npClose" aria-label="بستن پخش‌کننده"><svg><use href="#i-close"/></svg></button>
+    </header>
+
+    <div class="np-scroll" id="npScroll">
+      <div class="np-stage" id="npStage">
+        <div class="np-art" id="npArt">
+          <img id="npCover" src="assets/img/orbit-zero.jpg" alt="کاور ترک" width="640" height="640" decoding="async">
+        </div>
+      </div>
+
+      <div class="np-meta">
+        <h2 id="npTitle">—</h2>
+        <p id="npSub">Felani4F</p>
+      </div>
+
+      <div class="np-seek-wrap">
+        <input id="npSeek" class="np-seek" type="range" min="0" max="1000" step="1" value="0" dir="ltr" aria-label="جای پخش">
+        <div class="np-times"><span id="npCur">۰:۰۰</span><span id="npDur">۰:۰۰</span></div>
+      </div>
+
+      <div class="np-controls">
+        <button class="np-btn sm" id="npShuffle" aria-label="پخش تصادفی" aria-pressed="false"><svg><use href="#i-shuffle"/></svg></button>
+        <button class="np-btn" id="npPrev" aria-label="ترک قبلی"><svg><use href="#i-prev"/></svg></button>
+        <button class="np-play" id="npPlay" aria-label="پخش / توقف"><svg><use href="#i-play"/></svg></button>
+        <button class="np-btn" id="npNext" aria-label="ترک بعدی"><svg><use href="#i-next"/></svg></button>
+        <button class="np-btn sm" id="npRepeat" aria-label="تکرار" aria-pressed="false"><svg><use href="#i-repeat"/></svg></button>
+      </div>
+
+      <div class="np-actions">
+        <button class="np-act" id="npLike"><svg><use href="#i-heart"/></svg><span>پسندیدن</span></button>
+        <button class="np-act" id="npDl"><svg><use href="#i-download"/></svg><span>دانلود</span></button>
+        <button class="np-act" id="npCm"><svg><use href="#i-comment"/></svg><span>نظرها</span></button>
+        <button class="np-act" id="npQ" aria-pressed="false"><svg><use href="#i-queue"/></svg><span>صف پخش</span></button>
+      </div>
+
+      <figure class="np-vinyl" aria-label="صفحه‌گردان در حال پخش">
+        <picture>
+          <source srcset="assets/gif/vinyl-hbo.webp" type="image/webp">
+          <img src="assets/gif/vinyl-hbo.gif" alt="صفحه‌گردان واقعی در حال چرخش" width="400" height="225" loading="lazy" decoding="async">
+        </picture>
+        <figcaption dir="ltr"><i></i><span>VINYL CAM</span><b>33⅓ RPM</b></figcaption>
+      </figure>
+
+      <section class="np-queue" id="npQueueBox">
+        <div class="np-queue-h"><b>در صف بعدی</b><span id="npQueueCount"></span></div>
+        <div class="np-queue-list" id="npQueue"></div>
+      </section>
+
+      <p class="np-foot">برای بستن، پایین بکش · برای ترک بعدی، چپ بکش →</p>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- ============ DRAWER ============ -->
 <div class="scrim" id="scrim"></div>
@@ -575,7 +668,8 @@
 
       <!-- publish -->
       <section class="atab" data-panel="publish">
-        <div class="admin-bar"><p class="mn">برای بارگذاری فایل صوتی یا کاور جدید داخل سایت، یک توکن انتشار با دسترسی نوشتن روی مخزن لازم است. توکن فقط در همین مرورگر ذخیره می‌شود.</p></div>
+        <div class="admin-bar"><p class="mn">هر ترک، کاور یا فایلی که ذخیره کنی مستقیماً روی مخزن سایت کامیت می‌شود؛ بنابرین همه‌ی بازدیدکننده‌ها آن را می‌بینند. برای این کار یک توکن با دسترسی نوشتن روی مخزن لازم است. توکن فقط در همین مرورگر ذخیره می‌شود.</p></div>
+        <div class="pub-now"><span class="pub-dot wait" id="pubDot"></span><span id="pubLast">وضعیت انتشار: در حال بررسی…</span></div>
         <div class="pub-grid">
           <div class="field"><label for="ghRepo">مخزن</label><input class="input en" id="ghRepo" value="Drserver2350/felani4f" dir="ltr"></div>
           <div class="field"><label for="ghBranch">شاخه</label><input class="input en" id="ghBranch" value="main" dir="ltr"></div>
@@ -585,7 +679,7 @@
             <button class="btn btn-ghost btn-sm" id="testToken">تست اتصال</button>
             <span class="pub-state" id="pubState"></span>
           </div>
-          <p class="mn" style="grid-column:1/-1">بدون توکن هم می‌توانی ترک اضافه کنی؛ فقط فایل باید جایی هاست شده باشد و لینک مستقیم آن را وارد کنی.</p>
+          <p class="mn" style="grid-column:1/-1">توکن باید از نوع fine-grained و با دسترسی <span class="en">Contents: Read and write</span> روی همین مخزن باشد. بعد از ذخیره، صفحه را یک بار رفرش کن.</p>
         </div>
         <div class="pub-sep"></div>
         <div class="admin-bar"><p class="mn">انتشار تغییرات ترک‌ها روی سایت: با این کار فایل محتوای منتشرشده در مخزن به‌روز می‌شود و همه‌ی بازدیدکننده‌ها تغییرات را می‌بینند.</p></div>
@@ -636,8 +730,24 @@
       </div>
       <div class="field"><label for="trDesc">توضیحات</label><textarea class="input" id="trDesc" rows="3"></textarea></div>
       <div class="row2">
-        <div class="field"><label for="trAudio">فایل صوتی (MP3)</label><input class="input" id="trAudio" type="file" accept="audio/mpeg,audio/mp3"></div>
-        <div class="field"><label for="trCover">کاور (JPG/PNG)</label><input class="input" id="trCover" type="file" accept="image/*"></div>
+        <div class="up-zone" id="upAudio">
+          <label for="trAudio"><svg><use href="#i-wave"/></svg> فایل صوتی (MP3)</label>
+          <input id="trAudio" type="file" accept="audio/mpeg,audio/mp3,.mp3,audio/*">
+          <p class="up-note" id="upAudioNote">کاور داخل فایل MP3 خودکار برداشته می‌شود.</p>
+        </div>
+        <div class="up-zone" id="upCover">
+          <label for="trCover"><svg><use href="#i-image"/></svg> کاور (اختیاری)</label>
+          <input id="trCover" type="file" accept="image/*">
+          <p class="up-note">اگر خالی بماند، از کاور فایل صوتی استفاده می‌شود؛ اگر آن هم نبود، کاور پیش‌فرض ساخته می‌شود.</p>
+        </div>
+      </div>
+      <div class="id3card" id="id3Card" hidden>
+        <img id="id3Img" alt="کاور استخراج‌شده از فایل">
+        <div><b id="id3Title">—</b><span id="id3Sub">—</span></div>
+      </div>
+      <div class="up-log" id="upLog" hidden>
+        <div class="up-bar"><i id="upBar"></i></div>
+        <div id="upSteps"></div>
       </div>
       <div class="field"><label for="trSrc">یا لینک مستقیم فایل صوتی</label><input class="input en" id="trSrc" dir="ltr" placeholder="https://…/track.mp3"></div>
       <div class="field"><label for="trImg">یا لینک مستقیم کاور</label><input class="input en" id="trImg" dir="ltr" placeholder="https://…/cover.jpg"></div>
@@ -657,7 +767,6 @@
 <noscript><div style="padding:120px 24px;text-align:center;color:#93939d">برای شنیدن ترک‌ها و ثبت نظر، جاوااسکریپت را فعال کن.</div></noscript>
 
 <script src="assets/js/config.js"></script>
-<script src="assets/js/overrides.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/api.js"></script>
 <script src="assets/js/app.js"></script>

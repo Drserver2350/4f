@@ -47,8 +47,12 @@
   const peaksOf = (t) => (Array.isArray(t.peaks) && t.peaks.length ? t.peaks : pseudoPeaks(t));
 
   /* ---------- state ---------- */
-  const state = { cur: null, playing: false, filter: 'all', q: '', rate: 5, drTrack: null, muted: false, vol: 0.9, onlyMine: false };
-  try { const v = localStorage.getItem('f4f.vol'); if (v) state.vol = Number(v) || 0.9; } catch (e) {}
+  const state = { cur: null, playing: false, filter: 'all', q: '', rate: 5, drTrack: null, muted: false, vol: 0.9, onlyMine: false, shuffle: false, repeat: 'off' };
+  try {
+    const v = localStorage.getItem('f4f.vol'); if (v) state.vol = Number(v) || 0.9;
+    state.shuffle = localStorage.getItem('f4f.shuffle') === 'true';
+    const rp = localStorage.getItem('f4f.repeat'); if (rp === 'one' || rp === 'all' || rp === 'off') state.repeat = rp;
+  } catch (e) {}
 
   /* ---------- toasts ---------- */
   const toasts = $('#toasts');
@@ -379,6 +383,77 @@
   const audio = $('#audio');
   const dock = $('#dock');
   audio.volume = state.vol;
+  const np = $('#np');
+  const npSeek = $('#npSeek');
+  const npArt = $('#npArt');
+  const npVideo = $('#npVideo');
+  let npSeeking = false;
+
+  function paintSheet(t) {
+    if (!t) return;
+    $('#npTitle').textContent = t.fa + ' — ' + t.en;
+    $('#npSub').textContent = (t.genre || 'Felani4F') + (t.bpm ? ' · ' + t.bpm + ' BPM' : '');
+    const cover = imgBig(t);
+    const img = $('#npCover');
+    if (img.getAttribute('src') !== cover) img.src = cover;
+    $('#npBg').style.backgroundImage = 'url("' + cover.replace(/"/g, '\\"') + '")';
+    $('#npCur').textContent = fmtFa(0);
+    $('#npDur').textContent = fmtFa(t.dur || 0);
+    npSeek.value = 0;
+    npSeek.style.setProperty('--p', 0);
+    renderQueue();
+    const liked = F4F.iLiked(t.id);
+    const lk = $('#npLike');
+    lk.classList.toggle('liked', !!liked);
+    lk.querySelector('span').textContent = liked ? 'پسندیدی' : 'پسندیدن';
+  }
+
+  function queueList() {
+    const T = allTracks();
+    if (!T.length) return [];
+    const i = state.cur ? T.findIndex((x) => x.id === state.cur.id) : -1;
+    const out = [];
+    for (let k = 1; k <= Math.min(7, T.length - 1); k++) out.push(T[((i < 0 ? 0 : i) + k) % T.length]);
+    return out;
+  }
+  function renderQueue() {
+    const box = $('#npQueue');
+    if (!box) return;
+    const list = queueList();
+    $('#npQueueCount').textContent = list.length ? fa(list.length) + ' ترک' : '';
+    box.innerHTML = list.map((t) => `
+      <button class="np-q" data-q="${esc(t.id)}" type="button">
+        <img src="${esc(imgSmall(t))}" alt="" width="38" height="38" loading="lazy">
+        <span class="np-q-t"><b>${esc(t.fa)}</b><span>${esc(t.en)} · ${esc(fmt(t.dur || 0))}</span></span>
+        ${state.cur && state.cur.id === t.id ? '<em class="np-q-now">NOW</em>' : ''}
+      </button>`).join('');
+  }
+
+  function openNP() {
+    const id = state.cur ? state.cur.id : (allTracks()[0] || {}).id;
+    if (!id) return;
+    if (!state.cur) loadTrack(id, false);
+    paintSheet(byId(id));
+    np.classList.add('open');
+    np.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lock');
+    $('#npScroll').scrollTop = 0;
+    if (npVideo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      try { npVideo.currentTime = 0; npVideo.play().catch(() => {}); } catch (e) {}
+    }
+    syncPlayingUI();
+    setTimeout(() => $('#npClose').focus({ preventScroll: true }), 260);
+  }
+  function closeNP() {
+    if (!np.classList.contains('open')) return;
+    np.classList.remove('open');
+    np.setAttribute('aria-hidden', 'true');
+    if (!drawer.classList.contains('open')) document.body.classList.remove('lock');
+    if (npVideo) { try { npVideo.pause(); } catch (e) {} }
+    np.style.removeProperty('--dy');
+    np.style.opacity = '';
+    npArt.style.transform = '';
+  }
 
   function loadTrack(id, autoplay = true) {
     const t = byId(id);
@@ -393,6 +468,8 @@
       $('#dkDur').textContent = fmt(t.dur || 0);
       $('#dkCur').textContent = '0:00';
       dock.classList.add('up');
+      document.body.classList.add('has-player');
+      paintSheet(t);
       syncPlayingUI();
       if (drawer.classList.contains('open')) openDrawer(id, { focus: false });
     }
@@ -405,6 +482,14 @@
     const liked = state.cur && F4F.iLiked(state.cur.id);
     $('#dkLike').classList.toggle('liked', !!liked);
     $('#dkLike').innerHTML = ic(liked ? 'i-heart-f' : 'i-heart');
+    const npPlay = $('#npPlay');
+    if (npPlay) npPlay.innerHTML = ic(state.playing ? 'i-pause' : 'i-play');
+    const npLike = $('#npLike');
+    if (npLike) { npLike.classList.toggle('liked', !!liked); npLike.querySelector('span').textContent = liked ? 'پسندیدی' : 'پسندیدن'; }
+    $('#npShuffle').setAttribute('aria-pressed', String(!!state.shuffle));
+    const rp = $('#npRepeat');
+    rp.setAttribute('aria-pressed', String(state.repeat !== 'off'));
+    rp.innerHTML = ic(state.repeat === 'one' ? 'i-repeat1' : 'i-repeat');
     $$('.tr').forEach((r) => r.classList.toggle('playing', r.dataset.id === id && state.playing));
     $$('.wcard').forEach((c) => {
       const on = c.dataset.open === id && state.playing;
@@ -424,6 +509,12 @@
   }
   function step(dir) {
     const T = allTracks(); if (!T.length) return;
+    if (state.shuffle && T.length > 1) {
+      let n = Math.floor(Math.random() * T.length);
+      if (state.cur) { let guard = 0; while (T[n].id === state.cur.id && guard++ < 12) n = Math.floor(Math.random() * T.length); }
+      loadTrack(T[n].id, true);
+      return;
+    }
     let i = state.cur ? T.findIndex((t) => t.id === state.cur.id) : 0;
     i = (i + dir + T.length) % T.length;
     loadTrack(T[i].id, true);
@@ -431,11 +522,26 @@
   audio.addEventListener('play', () => { state.playing = true; syncPlayingUI(); });
   audio.addEventListener('pause', () => { state.playing = false; syncPlayingUI(); });
   audio.addEventListener('timeupdate', () => {
+    const ratio = audio.duration ? clamp(audio.currentTime / audio.duration, 0, 1) : 0;
     const cur = $('#dkCur'); if (cur) cur.textContent = fmt(audio.currentTime);
+    $('#dkLine').style.setProperty('--p', ratio);
+    if (!npSeeking) {
+      npSeek.value = Math.round(ratio * 1000);
+      npSeek.style.setProperty('--p', ratio);
+    }
+    $('#npCur').textContent = fmtFa(audio.currentTime);
+    if (audio.duration) $('#npDur').textContent = fmtFa(audio.duration);
     redrawWaves();
   });
-  audio.addEventListener('loadedmetadata', () => { $('#dkDur').textContent = fmt(audio.duration); redrawWaves(); });
-  audio.addEventListener('ended', () => step(1));
+  audio.addEventListener('loadedmetadata', () => {
+    $('#dkDur').textContent = fmt(audio.duration);
+    $('#npDur').textContent = fmtFa(audio.duration);
+    redrawWaves();
+  });
+  audio.addEventListener('ended', () => {
+    if (state.repeat === 'one') { audio.currentTime = 0; audio.play().catch(() => {}); return; }
+    step(1);
+  });
   audio.addEventListener('error', () => { if (state.cur) toast('فایل صوتی این ترک در دسترس نیست', 'i-ban'); });
   function updateMediaSession() {
     if (!('mediaSession' in navigator) || !state.cur) return;
@@ -457,11 +563,14 @@
   $('#dkPlay').addEventListener('click', togglePlay);
   $('#dkPrev').addEventListener('click', () => step(-1));
   $('#dkNext').addEventListener('click', () => step(1));
-  $('#dkClose').addEventListener('click', () => { audio.pause(); dock.classList.remove('up'); });
+  $('#dkClose').addEventListener('click', () => { audio.pause(); dock.classList.remove('up'); document.body.classList.remove('has-player'); });
   $('#dkLike').addEventListener('click', () => state.cur && doLike(state.cur.id));
   $('#dkDl').addEventListener('click', () => state.cur && download(state.cur.id));
   $('#dkCm').addEventListener('click', () => state.cur && openDrawer(state.cur.id, { focus: true }));
   $('#dkOpen').addEventListener('click', () => state.cur && openDrawer(state.cur.id, { focus: false }));
+  $('#dkExpand').addEventListener('click', openNP);
+  $('#dkMeta').addEventListener('click', openNP);
+  $('#dkInfo').addEventListener('click', openNP);
   $('#dkMute').addEventListener('click', () => {
     state.muted = !state.muted;
     audio.muted = state.muted;
@@ -479,6 +588,99 @@
     const r = e.currentTarget.getBoundingClientRect();
     audio.currentTime = clamp((e.clientX - r.left) / r.width, 0, 1) * audio.duration;
   });
+
+  /* ---------- now playing sheet ---------- */
+  npSeek.addEventListener('input', () => {
+    npSeeking = true;
+    const r = Number(npSeek.value) / 1000;
+    npSeek.style.setProperty('--p', r);
+    if (audio.duration) audio.currentTime = r * audio.duration;
+  });
+  ['change', 'pointerup', 'touchend'].forEach((ev) => npSeek.addEventListener(ev, () => { npSeeking = false; }));
+  $('#npClose').addEventListener('click', closeNP);
+  $('#npGrab').addEventListener('click', closeNP);
+  $('#npPlay').addEventListener('click', togglePlay);
+  $('#npPrev').addEventListener('click', () => step(-1));
+  $('#npNext').addEventListener('click', () => step(1));
+  $('#npLike').addEventListener('click', () => state.cur && doLike(state.cur.id));
+  $('#npDl').addEventListener('click', () => state.cur && download(state.cur.id));
+  $('#npCm').addEventListener('click', () => { if (state.cur) { closeNP(); openDrawer(state.cur.id, { focus: true }); } });
+  $('#npQ').addEventListener('click', (e) => {
+    const box = $('#npQueueBox');
+    const on = box.hidden;
+    box.hidden = !on;
+    e.currentTarget.setAttribute('aria-pressed', String(on));
+    renderQueue();
+  });
+  $('#npShuffle').addEventListener('click', () => {
+    state.shuffle = !state.shuffle;
+    F4F.ls.set('shuffle', state.shuffle);
+    syncPlayingUI();
+    toast(state.shuffle ? 'پخش تصادفی روشن شد' : 'پخش تصادفی خاموش شد', 'i-shuffle', 1800);
+  });
+  $('#npRepeat').addEventListener('click', () => {
+    state.repeat = state.repeat === 'off' ? 'all' : state.repeat === 'all' ? 'one' : 'off';
+    F4F.ls.set('repeat', state.repeat);
+    syncPlayingUI();
+    toast(state.repeat === 'off' ? 'تکرار خاموش' : state.repeat === 'all' ? 'تکرار همه‌ی ترک‌ها' : 'تکرار همین ترک', 'i-repeat', 1800);
+  });
+  $('#npQueue').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-q]');
+    if (b) loadTrack(b.dataset.q, true);
+  });
+
+  /* gestures: swipe down to close, horizontal to change track */
+  let g = null;
+  const gestureZone = (el) => {
+    if (!el) return;
+    el.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button') && !e.target.closest('#npGrab') && !e.target.closest('#npArt')) return;
+      if (e.pointerType === 'mouse' && el === npArt) return;
+      g = { x: e.clientX, y: e.clientY, t: Date.now(), el };
+      np.classList.add('dragging');
+    });
+  };
+  gestureZone($('#npHead'));
+  gestureZone(npArt);
+  addEventListener('pointermove', (e) => {
+    if (!g) return;
+    const dx = e.clientX - g.x, dy = e.clientY - g.y;
+    if (Math.abs(dy) > Math.abs(dx)) {
+      np.style.setProperty('--dy', Math.max(0, dy) + 'px');
+      np.style.opacity = String(Math.max(0.4, 1 - Math.max(0, dy) / 760));
+    } else if (g.el === npArt) {
+      npArt.style.transform = 'translateX(' + dx * 0.55 + 'px) rotate(' + dx * 0.02 + 'deg)';
+    }
+  }, { passive: true });
+  addEventListener('pointerup', (e) => {
+    if (!g) return;
+    const dx = e.clientX - g.x, dy = e.clientY - g.y, dt = Date.now() - g.t;
+    np.classList.remove('dragging');
+    np.style.opacity = '';
+    if (Math.abs(dy) >= Math.abs(dx)) {
+      if (dy > 110 || (dy > 40 && dt < 260)) closeNP();
+      else np.style.removeProperty('--dy');
+      npArt.style.transform = '';
+    } else if (g.el === npArt && Math.abs(dx) > 64) {
+      const dir = dx < 0 ? 1 : -1;
+      npArt.style.transition = 'transform .22s var(--ease), opacity .22s';
+      npArt.style.transform = 'translateX(' + (dx < 0 ? -70 : 70) + 'px) scale(.9)';
+      npArt.style.opacity = '0';
+      setTimeout(() => {
+        step(dir);
+        npArt.style.transition = 'none';
+        npArt.style.transform = 'translateX(' + (dx < 0 ? 60 : -60) + 'px) scale(.94)';
+        requestAnimationFrame(() => {
+          npArt.style.transition = 'transform .3s var(--ease), opacity .3s';
+          npArt.style.transform = '';
+          npArt.style.opacity = '1';
+        });
+      }, 170);
+    } else { npArt.style.transform = ''; }
+    g = null;
+  });
+  addEventListener('pointercancel', () => { if (g) { g = null; np.classList.remove('dragging'); np.style.removeProperty('--dy'); np.style.opacity = ''; npArt.style.transform = ''; } });
+
   $('#tracks').addEventListener('click', (e) => {
     const w = e.target.closest('canvas.wave'); if (!w) return;
     const t = byId(w.closest('.tr').dataset.id);
@@ -797,16 +999,17 @@
     $('#ghRepo').value = F4F.CFG.repo; $('#ghBranch').value = F4F.CFG.branch;
   }
   function renderAdminTracks() {
-    const baseIds = new Set((typeof TRACKS !== 'undefined' ? TRACKS : []).map((t) => t.id));
+    const published = F4F.publishedTrackIds ? F4F.publishedTrackIds() : new Set();
+    const drafts = allTracks().filter((t) => t.custom && !published.has(t.id));
     const list = allTracks();
     const hidden = Object.keys(F4F.state.core.overrides || {}).filter((k) => F4F.state.core.overrides[k].deleted)
       .map((k) => (typeof TRACKS !== 'undefined' ? TRACKS.find((t) => t.id === k) : null)).filter(Boolean);
-    $('#admTracks').innerHTML = list.map((t) => `
+    $('#admTracks').innerHTML = (drafts.length ? `<div class="mode-note" style="margin-bottom:10px"><svg><use href="#i-cloud"/></svg><div><b>${fa(drafts.length)} ترک هنوز فقط در این مرورگر است</b><span>این ترک‌ها قبل از فعال‌شدن انتشار خودکار ساخته شده‌اند. با یک کلیک روی مخزن منتشرشان کن تا همه ببینند.</span><button class="btn btn-acc btn-sm" id="publishDrafts" style="margin-top:6px">انتشار این ترک‌ها</button></div></div>` : '') + list.map((t) => `
       <div class="adm-tr" data-aid="${t.id}">
         <img src="${imgSmall(t)}" alt="" width="46" height="46">
         <div class="at-meta">
           <b>${esc(t.fa)} <span class="en">${esc(t.en)}</span></b>
-          <small>${esc(t.genre || '—')} · ${t.bpm || '—'} BPM · ${fmt(t.dur || 0)} ${t.custom ? '· <span class="badge new">جدید</span>' : ''}</small>
+          <small>${esc(t.genre || '—')} · ${t.bpm || '—'} BPM · ${fmt(t.dur || 0)} ${t.custom ? '· <span class="badge new">جدید</span>' : ''} ${t.custom && !published.has(t.id) ? '· <span class="badge ban">فقط این مرورگر</span>' : ''}</small>
         </div>
         <div class="at-nums"><span>${nf(F4F.downloadsOf(t.id))} دانلود</span><span>${nf(F4F.commentCount(t.id))} نظر</span><span>${nf(F4F.likeCount(t.id))} لایک</span></div>
         <div class="at-acts">
@@ -876,6 +1079,10 @@
     $('#trNum').value = t ? t.num || '' : String(allTracks().length + 1).padStart(2, '0');
     $('#trDesc').value = t ? t.desc || '' : '';
     $('#trAudio').value = ''; $('#trCover').value = '';
+    const ic0 = $('#id3Card'); if (ic0) ic0.hidden = true;
+    $('#upAudio').classList.remove('has'); $('#upCover').classList.remove('has');
+    if (typeof upReset === 'function') upReset();
+    $('#upAudioNote').textContent = 'کاور داخل فایل MP3 خودکار برداشته می‌شود.';
     $('#trSrc').value = t && t.src && /^https?:/i.test(t.src) ? t.src : (t && t.src && !/^assets\//.test(t.src) ? t.src : '');
     $('#trImg').value = t && t.img && /^https?:/i.test(t.img) ? t.img : '';
     $('#trErr').hidden = true;
@@ -903,6 +1110,63 @@
     try { await F4F.restoreTrack(id); trackModal.classList.remove('open'); rerenderAll(); toast('ترک بازگردانده شد', 'i-check'); }
     catch (e) { errToast(e); }
   });
+  /* upload progress helpers */
+  const upLog = () => $('#upLog');
+  function upReset() { const l = upLog(); if (l) l.hidden = true; $('#upSteps').innerHTML = ''; $('#upBar').style.width = '0%'; }
+  function upStep(text, pct = 0) {
+    const l = upLog(); if (!l) return null;
+    l.hidden = false;
+    Array.from($('#upSteps').children).forEach((el) => { el.classList.remove('on'); el.classList.add('ok'); });
+    const st = document.createElement('div');
+    st.className = 'st on';
+    st.innerHTML = '<i></i><span></span>';
+    st.querySelector('span').textContent = text;
+    $('#upSteps').appendChild(st);
+    $('#upBar').style.width = Math.max(0, Math.min(100, pct)) + '%';
+    return st;
+  }
+  function upDone(st, text) {
+    if (!st) return;
+    st.classList.remove('on'); st.classList.add('ok');
+    if (text) st.querySelector('span').textContent = text;
+    $('#upBar').style.width = '100%';
+  }
+
+  /* ID3 preview: show the cover embedded in the chosen MP3 */
+  let id3PreviewUrl = null;
+  $('#trAudio').addEventListener('change', async () => {
+    const f = $('#trAudio').files[0];
+    const card = $('#id3Card');
+    const zone = $('#upAudio');
+    zone.classList.toggle('has', !!f);
+    if (!f) { card.hidden = true; return; }
+    const note = $('#upAudioNote');
+    note.textContent = 'در حال خواندن فایل…';
+    try {
+      const meta = await F4F.readId3(f);
+      if (id3PreviewUrl) { URL.revokeObjectURL(id3PreviewUrl); id3PreviewUrl = null; }
+      if (meta && meta.picture) {
+        id3PreviewUrl = URL.createObjectURL(meta.picture);
+        $('#id3Img').src = id3PreviewUrl;
+        $('#id3Title').textContent = meta.title || 'کاور داخل فایل پیدا شد';
+        $('#id3Sub').textContent = [meta.artist, meta.album].filter(Boolean).join(' · ') || meta.picture.type;
+        card.hidden = false;
+        note.textContent = 'کاور داخل فایل پیدا شد — خودکار به‌عنوان کاور ترک استفاده می‌شود.';
+        if (!$('#trEn').value && meta.title) $('#trEn').value = meta.title;
+        if (!$('#trFa').value && meta.title) $('#trFa').value = meta.title;
+      } else {
+        card.hidden = true;
+        note.textContent = 'این فایل کاور داخلی ندارد؛ کاور انتخابی یا کاور پیش‌فرض استفاده می‌شود.';
+      }
+    } catch (e) {
+      card.hidden = true;
+      note.textContent = 'خواندن تگ‌های فایل ممکن نشد؛ کاور پیش‌فرض ساخته می‌شود.';
+    }
+  });
+  $('#trCover').addEventListener('change', () => {
+    $('#upCover').classList.toggle('has', !!$('#trCover').files[0]);
+  });
+
   $('#trackForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const idField = $('#trId').value.trim();
@@ -934,26 +1198,66 @@
     const imgUrl = $('#trImg').value.trim();
     if (srcUrl) payload.src = srcUrl;
     if (imgUrl) payload.img = imgUrl;
-    if (!srcUrl && !audioFile && !isBase) { showTrErr('فایل صوتی یا لینک مستقیم لازم است'); return; }
+    if (existing && existing.img && !imgUrl) payload.img = existing.img;
+    if (existing && existing.src && !srcUrl && !audioFile) payload.src = existing.src;
+    if (!srcUrl && !audioFile && !isBase && !(existing && existing.src)) { showTrErr('فایل صوتی یا لینک مستقیم لازم است'); return; }
+    if (!F4F.ghToken()) {
+      showTrErr('برای ذخیره‌ی دائمی روی سایت، توکن انتشار لازم است. تب «انتشار» را باز کن و توکن را ذخیره کن.');
+      const t = document.querySelector('[data-atab="publish"]');
+      if (t) t.click();
+      return;
+    }
+
+    const btn = e.submitter || $('#trackForm button[type=submit]');
+    $('#trErr').hidden = true;
+    upReset();
+    if (btn) { btn.disabled = true; btn.style.opacity = .65; }
     try {
-      const btn = e.submitter || $('#trackForm button[type=submit]');
-      if (btn) { btn.disabled = true; btn.style.opacity = .7; }
+      let out = null;
       if (audioFile || coverFile) {
-        if (!F4F.ghToken()) throw new Error('برای بارگذاری فایل، اول در تب «انتشار فایل» توکن را ذخیره کن (یا از لینک مستقیم استفاده کن)');
-        await F4F.publishTrack({ track: payload, audioFile, coverFile });
-        toast('فایل‌ها منتشر شدند', 'i-cloud');
+        out = await F4F.publishTrack({
+          track: payload, audioFile, coverFile,
+          onProgress: (msg, pct) => upStep(msg, pct),
+        });
+      } else {
+        const st = upStep('ثبت تغییرات و انتشار برای همه…', 30);
+        await F4F.saveTrack(payload);
+        upDone(st, 'منتشر شد');
       }
-      await F4F.saveTrack(payload);
+      if (out && out.autoCover) toast('کاور از داخل فایل MP3 برداشته شد', 'i-image', 4000);
       trackModal.classList.remove('open');
       rerenderAll();
-      toast(idField ? 'ترک به‌روزرسانی شد' : 'ترک جدید منتشر شد', 'i-check');
-    } catch (ex) { showTrErr(ex.message || 'خطا در ذخیره'); }
-    finally { const btn = e.submitter || $('#trackForm button[type=submit]'); if (btn) { btn.disabled = false; btn.style.opacity = 1; } }
+      toast(idField ? 'ترک ویرایش و منتشر شد' : 'ترک جدید منتشر شد', 'i-check', 4000);
+      if (out && out.publish && out.publish.commit) afterPublish(out.publish.commit);
+    } catch (ex) {
+      showTrErr(ex.message || 'خطا در ذخیره');
+    } finally { if (btn) { btn.disabled = false; btn.style.opacity = 1; } }
   });
+
+  /* after a commit: tell the admin when Pages has rebuilt */
+  async function afterPublish(commit) {
+    toast('در حال ساخت نسخه‌ی سایت روی GitHub Pages…', 'i-cloud', 3500);
+    try {
+      const r = await F4F.waitForPages(commit, { timeout: 150000 });
+      if (r.ok) toast('نسخه‌ی تازه روی سایت فعال شد — همه می‌بینند', 'i-check', 4200);
+      else if (r.status === 'timeout') toast('ساخت سایت طول می‌کشد؛ یک دقیقه بعد چک کن', 'i-cloud', 4200);
+    } catch (e) {}
+  }
+
   function showTrErr(msg) { const el = $('#trErr'); el.textContent = msg; el.hidden = false; }
 
   /* admin track actions */
   $('#admTracks').addEventListener('click', async (e) => {
+    const pd = e.target.closest('#publishDrafts');
+    if (pd) {
+      pd.disabled = true; pd.textContent = 'در حال انتشار…';
+      try {
+        await F4F.publishContent();
+        rerenderAll();
+        toast('ترک‌های محلی منتشر شدند — همه می‌بینند', 'i-cloud', 4200);
+      } catch (ex) { errToast(ex); pd.disabled = false; pd.textContent = 'انتشار این ترک‌ها'; }
+      return;
+    }
     const ed = e.target.closest('[data-edit]');
     if (ed) { openTrackEditor(ed.dataset.edit); return; }
     const del = e.target.closest('[data-deletetrack]');
@@ -974,7 +1278,8 @@
         try {
           if (!F4F.ghToken()) throw new Error('برای جایگزینی فایل، توکن انتشار لازم است');
           const t = byId(id);
-          await F4F.publishTrack({ track: Object.assign({}, t, { id }), audioFile: f, coverFile: null });
+          const out = await F4F.publishTrack({ track: Object.assign({}, t, { id }), audioFile: f, coverFile: null, keepCover: true });
+          if (out && out.publish && out.publish.commit) afterPublish(out.publish.commit);
           toast('فایل صوتی به‌روزرسانی شد', 'i-wave');
           rerenderAll();
         } catch (ex) { errToast(ex); }
@@ -1012,6 +1317,7 @@
     F4F.ls.set('ghRepo', $('#ghRepo').value.trim());
     F4F.ls.set('ghBranch', $('#ghBranch').value.trim());
     $('#pubState').textContent = 'ذخیره شد ✓';
+    renderPubStatus();
     toast('توکن انتشار ذخیره شد', 'i-check');
   });
   $('#testToken').addEventListener('click', async () => {
@@ -1024,6 +1330,28 @@
       st.textContent = 'اتصال سالم است ✓'; st.style.color = 'var(--acc)';
     } catch (e) { st.textContent = e.message; st.style.color = 'var(--ok-red, #ff6a6a)'; }
   });
+
+  /* publish status (auto-published catalogue) */
+  function renderPubStatus() {
+    const el = document.getElementById('pubLast');
+    const dot = document.getElementById('pubDot');
+    if (!el) return;
+    const at = F4F.state.publishedAt || 0;
+    if (!F4F.ghToken()) {
+      el.textContent = 'توکن انتشار ذخیره نشده — تا آن را ذخیره نکنی، ترک جدید روی سایت منتشر نمی‌شود.';
+      if (dot) dot.className = 'pub-dot';
+      return;
+    }
+    if (!at) {
+      el.textContent = 'توکن ذخیره شده. هنوز محتوایی منتشر نشده است.';
+      if (dot) dot.className = 'pub-dot wait';
+      return;
+    }
+    el.textContent = 'آخرین انتشار روی مخزن: ' + rel(at) + ' — تغییرات برای همه‌ی بازدیدکننده‌ها فعال است.';
+    if (dot) dot.className = 'pub-dot';
+  }
+  document.addEventListener('f4f:change', renderPubStatus);
+  document.addEventListener('f4f:ready', renderPubStatus);
 
   /* publish content + DB wiring */
   const pubBtn = document.getElementById('publishContent');
@@ -1057,8 +1385,8 @@
     updateStats();
     if (state.cur) {
       const t = byId(state.cur.id);
-      if (!t) { audio.pause(); dock.classList.remove('up'); state.cur = null; }
-      else state.cur = t;
+      if (!t) { audio.pause(); dock.classList.remove('up'); document.body.classList.remove('has-player'); state.cur = null; closeNP(); }
+      else { state.cur = t; if (np.classList.contains('open')) paintSheet(t); }
     }
     if (drawer.classList.contains('open') && state.drTrack) { const t = byId(state.drTrack.id); if (t) openDrawer(t.id, {}); }
   }
