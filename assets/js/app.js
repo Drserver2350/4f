@@ -570,7 +570,7 @@
   $('#dkOpen').addEventListener('click', () => state.cur && openDrawer(state.cur.id, { focus: false }));
   $('#dkExpand').addEventListener('click', openNP);
   $('#dkMeta').addEventListener('click', openNP);
-  $('#dkInfo').addEventListener('click', openNP);
+  $('#dkInfo').addEventListener('click', (e) => { if (e.target.closest('button')) return; openNP(); });
   $('#dkMute').addEventListener('click', () => {
     state.muted = !state.muted;
     audio.muted = state.muted;

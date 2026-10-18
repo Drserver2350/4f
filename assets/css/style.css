@@ -1058,6 +1058,7 @@ select.input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xml
   .dk-time{display:none}
   .ctrls{gap:0}
   .ctrls .cbtn.prev{display:none}
+  .dock .ctrls .cbtn.next{display:grid;width:40px;height:40px}
   .cbtn{width:44px;height:44px}
   .cbtn.play{width:44px;height:44px;background:var(--acc)}
   .cbtn.next{color:var(--mut)}
