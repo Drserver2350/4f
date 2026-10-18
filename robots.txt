@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://drserver2350.github.io/felani4f/sitemap.xml
