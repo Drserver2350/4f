@@ -400,6 +400,7 @@ const F4F = (() => {
 
   async function deleteTrack(id) {
     assertAdmin(); assertPublisher();
+    const wasCustom = ((state.core.extraTracks || []).some((t) => t.id === id));
     await mutate('core', (d) => {
       if ((d.extraTracks || []).some((t) => t.id === id)) d.extraTracks = d.extraTracks.filter((t) => t.id !== id);
       else d.overrides[id] = Object.assign({}, d.overrides[id] || {}, { deleted: true });
@@ -407,6 +408,12 @@ const F4F = (() => {
     });
     emit('change', { kind: 'tracks' });
     await queuePublish();
+    // remove orphaned uploads so the repo does not grow forever
+    if (wasCustom) {
+      for (const f of [`assets/audio/${id}.mp3`, `assets/img/${id}.jpg`, `assets/img/${id}-sm.jpg`]) {
+        try { await ghDeleteFile(f, `felani4f: remove ${id} files`); } catch (e) {}
+      }
+    }
   }
 
   async function restoreTrack(id) {
@@ -483,6 +490,12 @@ const F4F = (() => {
       }
     }
     throw new Error('نوشتن فایل روی مخزن انجام نشد');
+  }
+  async function ghDeleteFile(filePath, message) {
+    const sha = await ghSha(filePath);
+    if (!sha) return false;
+    await gh('DELETE', `contents/${filePath}`, { message: message || 'felani4f: delete ' + filePath, sha, branch: ghConf().branch });
+    return true;
   }
   const toB64 = (buf) => {
     const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
