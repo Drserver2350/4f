@@ -1426,6 +1426,21 @@
     else if (e.key.toLowerCase() === 'm') $('#dkMute').click();
   });
 
+  /* ---------- ambient footage (only while visible, never on reduced motion) ---------- */
+  (function ambient() {
+    const vids = $$('video[data-autoplay-on-view]');
+    if (!vids.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    const io2 = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        const v = en.target;
+        if (en.isIntersecting) { v.play().catch(() => {}); }
+        else { try { v.pause(); } catch (e) {} }
+      });
+    }, { threshold: 0.15 });
+    vids.forEach((v) => io2.observe(v));
+  })();
+
   /* ---------- PWA ---------- */
   let installEvt = null;
   addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; $('#installBtn').hidden = false; });
