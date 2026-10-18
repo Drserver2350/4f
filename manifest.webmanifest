@@ -1,0 +1,19 @@
+{
+  "name": "4F — چهار فرکانس، یک امضا",
+  "short_name": "4F",
+  "description": "لیبل صوتی مستقل ۴F — بشنو، دانلود کن، نظر بده.",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070708",
+  "theme_color": "#070708",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/img/icon-mask.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

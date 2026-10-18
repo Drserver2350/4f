@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>4F — چهار فرکانس، یک امضا</title>
+<meta name="description" content="۴F یک لیبل صوتی مستقل است؛ ترک‌ها را با کیفیت کامل بشنو، دانلود کن و نظرت را درباره‌ی هر آهنگ بنویس.">
+<meta name="theme-color" content="#070708">
+<meta property="og:title" content="4F — چهار فرکانس، یک امضا">
+<meta property="og:description" content="پنج ترک، پنج حال‌وهوا. بشنو، دانلود کن، نظر بده.">
+<meta property="og:type" content="website">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c8ff3d'/%3E%3Ctext x='32' y='44' font-family='Arial Black,Arial' font-size='30' font-weight='900' text-anchor='middle' fill='%23090a08'%3E4F%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="assets/img/orbit-zero-sm.jpg">
+<link rel="preload" href="assets/fonts/vazirmatn-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/unbounded-sub.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============ SVG SPRITE ============ -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.2 5.3v13.4L19 12z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="7" y="5" width="3.7" height="14" rx="1.1" fill="currentColor"/><rect x="13.3" y="5" width="3.7" height="14" rx="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M18.5 6.2v11.6L9.6 12z" fill="currentColor"/><rect x="5.6" y="6.2" width="2.2" height="11.6" rx="1" fill="currentColor"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M5.5 6.2v11.6L14.4 12z" fill="currentColor"/><rect x="16.2" y="6.2" width="2.2" height="11.6" rx="1" fill="currentColor"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.2S4.3 15.4 2.6 10.9A5.3 5.3 0 0 1 12 6.5a5.3 5.3 0 0 1 9.4 4.4C19.7 15.4 12 20.2 12 20.2z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart-f" viewBox="0 0 24 24"><path d="M12 20.2S4.3 15.4 2.6 10.9A5.3 5.3 0 0 1 12 6.5a5.3 5.3 0 0 1 9.4 4.4C19.7 15.4 12 20.2 12 20.2z" fill="currentColor"/></symbol>
+  <symbol id="i-comment" viewBox="0 0 24 24"><path d="M20.4 14.6a2.8 2.8 0 0 1-2.8 2.8H9.4L4 20.6v-4.6a2.8 2.8 0 0 1-1-2.1V6.6a2.8 2.8 0 0 1 2.8-2.8h11.8a2.8 2.8 0 0 1 2.8 2.8z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M7.6 9.2h8.8M7.6 12.6h5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.6v10.8m0 0 4.1-4.1M12 14.4 7.9 10.3" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.2 16.6v2.2a1.6 1.6 0 0 0 1.6 1.6h12.4a1.6 1.6 0 0 0 1.6-1.6v-2.2" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.4 6.4 11.2 11.2M17.6 6.4 6.4 17.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.5L13 19V5L7.5 9.2z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M16.3 8.8a4.4 4.4 0 0 1 0 6.4M18.8 6.4a7.9 7.9 0 0 1 0 11.2" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.2v5.6h3.5L13 19V5L7.5 9.2z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="m16.4 9.6 5 4.8m0-4.8-5 4.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 15.1a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M19.3 14.4a1.6 1.6 0 0 0 .3 1.8l.1.1a1.9 1.9 0 1 1-2.7 2.7l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a1.9 1.9 0 1 1-3.8 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a1.9 1.9 0 1 1-2.7-2.7l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H4.4a1.9 1.9 0 1 1 0-3.8h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a1.9 1.9 0 1 1 2.7-2.7l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5V4.4a1.9 1.9 0 1 1 3.8 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a1.9 1.9 0 1 1 2.7 2.7l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1h.2a1.9 1.9 0 1 1 0 3.8h-.1a1.6 1.6 0 0 0-1.5 1z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.4" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="m15.4 15.4 4.2 4.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19.4V5m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.8 12.6 4.6 4.6L19.4 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.1l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.1 6.6 20l1-6.1L3.2 9.6l6.1-.9z" fill="currentColor"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.6" y="3.6" width="16.8" height="16.8" rx="5" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="12" r="3.9" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="17.1" cy="6.9" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24"><path d="M20.6 4.2 2.9 11.1c-.9.3-.9 1.2 0 1.5l4.2 1.4 1.6 4.9c.2.7.9.9 1.4.3l2.3-2.5 4.3 3.1c.6.4 1.2.2 1.4-.6l2.9-13.6c.2-.8-.4-1.4-1.4-1.4z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/><path d="m7.2 13.9 9.9-6.4-7.6 7.5-.3 3.1" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.4" width="18" height="13.2" rx="2.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="m4.4 7.6 7.6 5.6 7.6-5.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9.3 20.4c-4.3 1.3-4.3-2.2-6-2.7m12 5.3v-3.4c0-1 .1-1.4-.5-2 1.6-.2 3.3-.8 3.3-3.6a2.8 2.8 0 0 0-.8-2 2.6 2.6 0 0 0 0-2s-.6-.2-2.1.8a7.3 7.3 0 0 0-3.8 0c-1.5-1-2.1-.8-2.1-.8a2.6 2.6 0 0 0 0 2 2.8 2.8 0 0 0-.8 2c0 2.8 1.7 3.4 3.3 3.6-.4.4-.5.8-.5 1.4v3.4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7.5h16M4 12h16M4 16.5h11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  <symbol id="i-install" viewBox="0 0 24 24"><rect x="5.4" y="3.2" width="13.2" height="17.6" rx="2.8" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 7.4v5.8m0 0 2.5-2.5M12 13.2 9.5 10.7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="17.6" r=".9" fill="currentColor"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.6 12h14.8m0 0-5.6-5.6M19.4 12l-5.6 5.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24"><path d="M5 19 15.5 8.5M13.8 6.8l3.4 3.4M17 3v3M20.4 6.5h3M19.5 11.6v2.6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.6 6.6h14.8M9.4 6.6V4.8h5.2v1.8M6.4 6.6l.9 12.2a1.8 1.8 0 0 0 1.8 1.7h5.8a1.8 1.8 0 0 0 1.8-1.7l.9-12.2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5.6" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="18" cy="18.4" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="m8.4 10.7 7.2-3.8M8.4 13.3l7.2 3.8" stroke="currentColor" stroke-width="1.5"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2.2M8 6.6v10.8M12 3.6v16.8M16 7.6v8.8M20.8 10.4v3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-head" viewBox="0 0 24 24"><path d="M4.4 15v-3a7.6 7.6 0 1 1 15.2 0v3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/><rect x="3.2" y="13.6" width="4" height="6.6" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><rect x="16.8" y="13.6" width="4" height="6.6" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
+</svg>
+
+<!-- ============ PRELOADER ============ -->
+<div id="preload" aria-hidden="true">
+  <div class="pl-in">
+    <div class="pl-logo en"><span>4</span><span>F</span></div>
+    <div class="pl-bar"><i id="plBar"></i></div>
+    <div class="pl-num" id="plNum">0%</div>
+    <div class="pl-cap">چهار فرکانس، یک امضا</div>
+  </div>
+</div>
+
+<div class="scrollbar" aria-hidden="true"><i id="scrollProg"></i></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span class="dot"></span></div>
+
+<!-- ============ HEADER ============ -->
+<header class="head" id="head">
+  <a href="#top" class="brand" aria-label="4F — خانه">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="18" fill="#c8ff3d"/>
+      <text x="32" y="42" text-anchor="middle" font-family="Unbounded,Vazirmatn,sans-serif" font-size="26" font-weight="800" letter-spacing="-1.5" fill="#090b07">4F</text>
+      <circle cx="50" cy="14" r="3" fill="#090b07"/>
+    </svg>
+    <span class="bt">
+      <span class="b1">4F</span>
+      <span class="b2">AUDIO LABEL</span>
+    </span>
+  </a>
+  <nav class="nav" id="nav" aria-label="ناوبری اصلی">
+    <a href="#top" class="active">خانه</a>
+    <a href="#works">منتخب</a>
+    <a href="#library">کتابخانه</a>
+    <a href="#about">درباره</a>
+    <a href="#comments">نظرها</a>
+  </nav>
+  <div class="head-actions">
+    <button class="icon-btn" id="installBtn" hidden title="نصب اپ" aria-label="نصب اپ"><svg><use href="#i-install"/></svg></button>
+    <button class="icon-btn" id="searchBtn" title="جست‌وجو" aria-label="جست‌وجو"><svg><use href="#i-search"/></svg></button>
+    <a class="btn btn-acc btn-sm" href="#pack"><svg><use href="#i-download"/></svg> دانلود پک</a>
+    <button class="icon-btn burger" id="burger" aria-label="منو" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <a href="#top">خانه</a>
+  <a href="#works">منتخب</a>
+  <a href="#library">کتابخانه</a>
+  <a href="#about">دربارهی ۴F</a>
+  <a href="#comments">نظر شنوندهها</a>
+  <a href="#pack">دانلود پک</a>
+  <div class="sm-foot">
+    <span class="en">4F · 2026</span>
+    <span>تهران — نیویورک</span>
+    <a href="mailto:hello@4f.audio" style="font-size:12px">hello@4f.audio</a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <div class="hero-l">
+        <div class="eyebrow rv"><span class="pulse"></span> <b>لیبل مستقل صوتی</b> <span class="en" style="color:var(--dim)">VOL.01 / 2026</span></div>
+        <h1 class="rv" style="--d:.08s">
+          <span class="l1">چهار فرکانس،</span>
+          <span class="l1"><span class="grad">یک</span> <em>امضا</em>.</span>
+        </h1>
+        <p class="lead rv" style="--d:.16s">
+          صداهایی که در اتاق کوچک ما ساخته می‌شوند و مستقیم به گوش تو می‌رسند.
+          پنج ترک برای پنج حال‌وهوا؛ بشنو، با کیفیت کامل دانلود کن و بگو چه حسی داشت.
+        </p>
+        <div class="hero-cta rv" style="--d:.24s">
+          <button class="btn btn-acc play-cta" id="heroPlay">
+            <span class="pc"><svg style="width:15px;height:15px"><use href="#i-play"/></svg></span>
+            شروع شنیدن
+          </button>
+          <a href="#pack" class="btn btn-ghost"><svg><use href="#i-download"/></svg> دانلود پک کامل</a>
+        </div>
+        <div class="stats rv" style="--d:.32s">
+          <div class="stat"><b id="statTracks">۵<i>TRACKS</i></b><span>ترک در مجموعه</span></div>
+          <div class="stat"><b id="statDur">۹:۵۵</b><span>مجموع زمان</span></div>
+          <div class="stat"><b id="statDl">۶٬۸۶۰<i>+</i></b><span>دانلود</span></div>
+          <div class="stat"><b id="statCm">۰</b><span>نظر شنونده</span></div>
+        </div>
+      </div>
+      <div class="hero-r" style="direction:ltr">
+        <div class="rings" aria-hidden="true">
+          <svg viewBox="0 0 600 600" fill="none">
+            <circle cx="300" cy="300" r="290" stroke="rgba(255,255,255,.09)" stroke-dasharray="1 9"/>
+            <circle cx="300" cy="300" r="232" stroke="rgba(255,255,255,.1)" stroke-dasharray="34 22"/>
+            <circle cx="300" cy="300" r="176" stroke="rgba(200,255,61,.22)" stroke-dasharray="2 12"/>
+            <circle cx="472" cy="146" r="4" fill="#c8ff3d"/>
+            <circle cx="126" cy="404" r="3" fill="#b49bff"/>
+            <path d="M300 8v26M300 566v26M8 300h26M566 300h26" stroke="rgba(255,255,255,.22)"/>
+          </svg>
+        </div>
+        <div class="orb" aria-hidden="true"></div>
+        <button class="hcover c1" data-open="dusk" aria-label="ترک غروب">
+          <img src="assets/img/dusk.jpg" alt="کاور غروب" width="200" height="200">
+          <span class="hc-meta"><b>غروب</b><span>96 BPM</span></span>
+        </button>
+        <button class="hcover c2" data-open="orbit-zero" aria-label="ترک مدار صفر">
+          <img src="assets/img/orbit-zero.jpg" alt="کاور مدار صفر" width="240" height="240">
+          <span class="hc-meta"><b>مدار صفر</b><span>108 BPM</span></span>
+        </button>
+        <button class="hcover c3" data-open="circuit" aria-label="ترک مدار">
+          <img src="assets/img/circuit.jpg" alt="کاور مدار" width="180" height="180">
+          <span class="hc-meta"><b>مدار</b><span>132 BPM</span></span>
+        </button>
+      </div>
+    </div>
+    <div class="scroll-hint"><span class="ln"></span> اسکرول کن</div>
+  </section>
+
+  <!-- ============ TICKER ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="tk" id="ticker"></div>
+  </div>
+
+  <!-- ============ WORKS ============ -->
+  <section class="works sec" id="works">
+    <div class="wrap sec-head rv">
+      <div class="sh-l">
+        <span class="kicker">منتخب مجموعه</span>
+        <h2>پنج ترک، <span class="thin">پنج حال‌وهوا</span></h2>
+      </div>
+      <div class="sh-r">
+        <p>از امبینت شیشه‌ای تا بریک‌بیتِ ۱۳۲؛ برای هر ساعتِ شبانه‌روز یکی هست. روی کاور بزن تا باز شود.</p>
+      </div>
+    </div>
+    <div class="pin" id="pin">
+      <div class="haul" id="haul"><!-- cards injected --></div>
+    </div>
+    <div class="wrap works-foot">
+      <div class="drag-hint">
+        <svg><use href="#i-wave"/></svg>
+        <span>برای دیدن بقیه بکش</span>
+        <span class="en" style="color:var(--dim)">01 — 05</span>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="#library">همه‌ی ترک‌ها <svg style="transform:rotate(180deg)"><use href="#i-arrow"/></svg></a>
+    </div>
+  </section>
+
+  <!-- ============ LIBRARY ============ -->
+  <section class="sec library" id="library">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="sh-l">
+          <span class="kicker">کتابخانه</span>
+          <h2>همه‌ی ترک‌ها</h2>
+        </div>
+        <div class="sh-r">
+          <p id="libCount">۵ ترک · مجموع ۹ دقیقه و ۵۵ ثانیه</p>
+        </div>
+      </div>
+      <div class="filters rv" id="filters" role="tablist" aria-label="فیلتر ژانر"></div>
+      <div class="tracks" id="tracks"></div>
+    </div>
+  </section>
+
+  <!-- ============ PACK ============ -->
+  <section class="sec pack" id="pack">
+    <div class="wrap">
+      <div class="pack-in rv">
+        <div class="pack-l">
+          <span class="kicker">دانلود مستقیم</span>
+          <h2>همه‌ی ترک‌ها، <b>یک‌جا</b>.</h2>
+          <p>پک کامل شامل هر پنج ترک با کیفیت ۱۹۲ و کاورهای اختصاصی است. فایل‌ها بدون قفل، بدون واترمارک و آماده‌ی گوش‌دادن آفلاین‌اند.</p>
+          <div class="pack-acts">
+            <button class="btn btn-acc" id="dlAll"><svg><use href="#i-download"/></svg> دانلود پک کامل</button>
+            <button class="btn btn-ghost" id="shareBtn"><svg><use href="#i-share"/></svg> اشتراک‌گذاری سایت</button>
+          </div>
+          <div class="muted" style="font-size:10.5px;display:flex;gap:14px;flex-wrap:wrap">
+            <span>MP3 · 192kbps</span><span>·</span><span>۵ فایل</span><span>·</span><span>بدون محدودیت</span>
+          </div>
+        </div>
+        <div class="pack-list" id="packList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="sec about" id="about">
+    <div class="wrap about-in">
+      <div class="about-l">
+        <span class="kicker rv">درباره‌ی ۴F</span>
+        <h2 class="rv">صدایی که <span class="out">جا می‌ماند</span></h2>
+        <p class="rv">۴F از یک اتاق کوچک شروع شد؛ با یک لپ‌تاپ، یک هدفون و این ایده که موسیقی مستقل لازم نیست پیچیده یا دور از دسترس باشد. اسم از چهار لایه‌ی صدایی می‌آید که در هر ترک کنار هم می‌نشینند: باس، درام، پد و آرپ.</p>
+        <p class="rv">اینجا ویترینِ ماست؛ نه چیز بیشتری، نه چیز کمتری. هر ترک را می‌توانی همان‌جا بشنوی، کامل دانلود کنی و درباره‌اش نظر بدهی — بدون حساب کاربری و بدون واسطه.</p>
+        <div class="rv"><a href="mailto:hello@4f.audio" class="btn btn-ghost btn-sm"><svg><use href="#i-mail"/></svg> همکاری / سفارش</a></div>
+      </div>
+      <div class="about-r">
+        <div class="principle rv"><div class="pn">01</div><div><h3>چهار لایه، چهار فرکانس</h3><p>هر ترک از چهار لایه ساخته می‌شود؛ این سادگی، امضای صوتی ماست. هیچ لایه‌ای زیادی نیست و هیچ‌کدام کم نیست.</p></div></div>
+        <div class="principle rv"><div class="pn">02</div><div><h3>بدون واسطه</h3><p>مستقیم از اتاق کار به گوش تو. فایل کامل، بدون قفل، بدون واترمارک، با کیفیت ثابت ۱۹۲ کیلوبیت.</p></div></div>
+        <div class="principle rv"><div class="pn">03</div><div><h3>گفت‌وگو، بعد از گوش‌دادن</h3><p>هر ترک یک جمله است و نظر تو جمله‌ی بعدی. امتیاز بده، بنویس، و بگذار بقیه هم حس تو را بخوانند.</p></div></div>
+        <div class="principle rv"><div class="pn">04</div><div><h3>سبک و آزاد</h3><p>سایت روی GitHub Pages اجرا می‌شود؛ سریع، بدون تبلیغ و بدون ردیابی. فقط صدا و تو.</p></div></div>
+      </div>
+    </div>
+    <div class="big-marquee" aria-hidden="true" id="bigMarq">
+      <span>4F <i></i> <b>SOUND</b> <i></i> DOWNLOAD <i></i> LISTEN <i></i> COMMENT <i></i> 4F <i></i> <b>SOUND</b> <i></i> DOWNLOAD <i></i> LISTEN <i></i> COMMENT <i></i></span>
+      <span>4F <i></i> <b>SOUND</b> <i></i> DOWNLOAD <i></i> LISTEN <i></i> COMMENT <i></i> 4F <i></i> <b>SOUND</b> <i></i> DOWNLOAD <i></i> LISTEN <i></i> COMMENT <i></i></span>
+    </div>
+  </section>
+
+  <!-- ============ COMMENTS ============ -->
+  <section class="sec" id="comments">
+    <div class="wrap">
+      <div class="cm-head">
+        <div class="sh-l rv">
+          <span class="kicker">نظر شنونده‌ها</span>
+          <h2>چه حسی داشت؟</h2>
+        </div>
+        <div class="rating-big rv">
+          <div class="rb-n" id="avgNum">—</div>
+          <div class="rb-s">
+            <span class="stars" id="avgStars"></span>
+            <small><span id="avgCount">۰ نظر</span> · میانگین امتیاز</small>
+          </div>
+        </div>
+      </div>
+      <div class="cm-wrap">
+        <div class="cm-list" id="cmList"></div>
+        <form class="cm-form rv" id="cmForm" novalidate>
+          <h3><svg><use href="#i-comment"/></svg> نظرت را بنویس</h3>
+          <div class="field">
+            <label for="cmTrack">درباره‌ی کدام ترک؟</label>
+            <select class="input" id="cmTrack" required></select>
+          </div>
+          <div class="field">
+            <label>امتیاز تو</label>
+            <div class="star-in" id="starIn" role="radiogroup" aria-label="امتیاز"></div>
+          </div>
+          <div class="field">
+            <label for="cmName">نام</label>
+            <input class="input" id="cmName" type="text" maxlength="28" placeholder="مثلاً سارا" required>
+          </div>
+          <div class="field">
+            <label for="cmText">متن نظر</label>
+            <textarea class="input" id="cmText" maxlength="420" placeholder="چه حسی داشت؟ کجا گوش دادی؟" required></textarea>
+          </div>
+          <button class="btn btn-acc" type="submit" style="justify-content:center">ثبت نظر <svg><use href="#i-arrow"/></svg></button>
+          <div class="hint">نظرها همین‌جا در مرورگر تو ذخیره می‌شوند (نسخه‌ی سبک بدون سرور). با پنل مدیریت می‌توانی همه را خروجی بگیری.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <span class="kicker rv">تماس</span>
+        <h2 class="rv">کارِ تازه‌ای داری؟<br><a href="mailto:hello@4f.audio">بنویس</a> تا با هم بسازیم.</h2>
+      </div>
+      <div class="foot-r">
+        <div class="fcol">
+          <h4>بخش‌ها</h4>
+          <a href="#works">منتخب</a>
+          <a href="#library">کتابخانه</a>
+          <a href="#pack">دانلود پک</a>
+          <a href="#comments">نظرها</a>
+          <a href="#about">درباره</a>
+        </div>
+        <div class="fcol">
+          <h4>ارتباط</h4>
+          <a href="mailto:hello@4f.audio"><svg style="width:11px;height:11px;display:inline;vertical-align:-1px"><use href="#i-mail"/></svg> ایمیل</a>
+          <a href="https://instagram.com" target="_blank" rel="noopener">اینستاگرام</a>
+          <a href="https://t.me" target="_blank" rel="noopener">تلگرام</a>
+          <a href="#" id="adminLink">پنل مدیریت</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-brand en" aria-hidden="true">4F</div>
+    <div class="foot-bottom">
+      <div class="fb-l">
+        <span>© ۲۰۲۶ ۴F — همه‌ی حقوق محفوظ است.</span>
+        <span class="dotx"></span>
+        <span>ساخته‌شده با ♥ روی GitHub Pages</span>
+        <span class="dotx"></span>
+        <span class="en">v1.0</span>
+      </div>
+      <a href="#top" class="to-top">بازگشت به بالا <svg><use href="#i-up"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ PLAYER DOCK ============ -->
+<div class="dock" id="dock" role="region" aria-label="پخش‌کننده">
+  <div class="dock-in">
+    <div class="dk-cover">
+      <img id="dkCover" src="assets/img/orbit-zero-sm.jpg" alt="" width="52" height="52">
+      <span class="din"><svg style="width:14px;height:14px;position:absolute;inset:0;margin:auto;color:#fff"><use href="#i-wave"/></svg></span>
+    </div>
+    <div class="mid">
+      <div class="mid-top">
+        <b id="dkTitle">—</b>
+        <span id="dkSub">4F</span>
+        <button class="mini dk-like" id="dkLike" aria-label="پسندیدن"><svg><use href="#i-heart"/></svg></button>
+      </div>
+      <canvas class="wave-dock" id="dkWave" aria-label="نمودار موج"></canvas>
+      <div class="dk-time"><span id="dkCur">0:00</span><span id="dkDur">0:00</span></div>
+    </div>
+    <div class="ctrls">
+      <button class="cbtn prev" id="dkPrev" aria-label="قبلی"><svg><use href="#i-prev"/></svg></button>
+      <button class="cbtn play" id="dkPlay" aria-label="پخش / توقف"><svg><use href="#i-play"/></svg></button>
+      <button class="cbtn next" id="dkNext" aria-label="بعدی"><svg><use href="#i-next"/></svg></button>
+    </div>
+    <div class="dk-right">
+      <div class="vol">
+        <button class="cbtn" id="dkMute" aria-label="بی‌صدا"><svg><use href="#i-volume"/></svg></button>
+        <input type="range" id="dkVol" min="0" max="1" step="0.01" value="0.9" aria-label="بلندی صدا">
+      </div>
+      <button class="cbtn" id="dkCm" aria-label="نظرها"><svg><use href="#i-comment"/></svg></button>
+      <button class="cbtn" id="dkDl" aria-label="دانلود"><svg><use href="#i-download"/></svg></button>
+      <button class="cbtn" id="dkOpen" aria-label="جزئیات ترک"><svg><use href="#i-arrow"/></svg></button>
+    </div>
+    <button class="dk-close" id="dkClose" aria-label="بستن پخش‌کننده"><svg><use href="#i-close"/></svg></button>
+  </div>
+</div>
+<audio id="audio" preload="none"></audio>
+
+<!-- ============ DRAWER ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="جزئیات ترک">
+  <div class="dr-head">
+    <div class="dr-hero"><img id="drImg" src="assets/img/orbit-zero.jpg" alt=""></div>
+    <button class="dr-close" id="drClose" aria-label="بستن"><svg><use href="#i-close"/></svg></button>
+  </div>
+  <div class="dr-body">
+    <span class="dr-tag en" id="drTag">ORIGINAL</span>
+    <div class="dr-title">
+      <h2 id="drTitle">—</h2>
+      <span id="drEn">—</span>
+    </div>
+    <canvas class="dr-wave" id="drWave" aria-label="نمودار موج ترک"></canvas>
+    <div class="dr-acts">
+      <button class="btn btn-acc" id="drPlay"><svg><use href="#i-play"/></svg> پخش</button>
+      <button class="btn btn-ghost" id="drDl"><svg><use href="#i-download"/></svg> دانلود</button>
+      <button class="btn btn-ghost" id="drLike"><svg><use href="#i-heart"/></svg> پسندیدن</button>
+      <button class="btn btn-ghost" id="drShare"><svg><use href="#i-share"/></svg></button>
+    </div>
+    <div class="dr-meta">
+      <div class="dm"><span>ژانر</span><b id="drGenre">—</b></div>
+      <div class="dm"><span>تمپو</span><b id="drBpm">—</b></div>
+      <div class="dm"><span>گام</span><b id="drKey">—</b></div>
+      <div class="dm"><span>زمان</span><b id="drDur">—</b></div>
+    </div>
+    <p class="dr-desc" id="drDesc"></p>
+    <div class="dr-sec">
+      <div class="dr-sec-h">
+        <h3><svg><use href="#i-comment"/></svg> نظرها</h3>
+        <span id="drCmCount">0</span>
+      </div>
+      <div class="dr-cm" id="drCmList"></div>
+      <form id="drCmForm" style="display:grid;gap:9px">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+          <input class="input" id="drCmName" placeholder="نام" maxlength="28" required>
+          <div class="star-in" id="drStars" role="radiogroup" aria-label="امتیاز"></div>
+        </div>
+        <textarea class="input" id="drCmText" placeholder="نظرت درباره‌ی این ترک…" maxlength="420" required></textarea>
+        <button class="btn btn-ghost btn-sm" type="submit" style="justify-content:center">ثبت نظر</button>
+      </form>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ ADMIN ============ -->
+<div class="modal" id="admin" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+  <div class="modal-in">
+    <h3 id="adminTitle"><svg><use href="#i-gear"/></svg> پنل مدیریت ۴F</h3>
+    <p class="mn">نسخه‌ی سبک (بدون سرور). تنظیمات و نظرها در مرورگر ذخیره می‌شوند. برای افزودن ترک، فایل MP3 و کاور را به پوشه‌ها اضافه کن و یک آبجکت در <b class="en">assets/js/data.js</b> بساز.</p>
+    <div class="row2">
+      <div class="field"><label for="setName">نام سایت</label><input class="input" id="setName" value="4F"></div>
+      <div class="field"><label for="setTag">شعار</label><input class="input" id="setTag" value="چهار فرکانس، یک امضا"></div>
+    </div>
+    <div class="field"><label>رنگ اصلی</label><div class="swatches" id="swatches"></div></div>
+    <div class="field">
+      <label>افزودن ترک (نمونه)</label>
+      <pre class="code">{ <b>id</b>:'my-track', <b>fa</b>:'نام فارسی', <b>en</b>:'English Name',
+  <b>genre</b>:'ژانر', <b>bpm</b>:100, <b>key</b>:'A min',
+  <b>c</b>:'#c8ff3d', <b>dur</b>:120, <b>peaks</b>:[...] },
+/* فایل: assets/audio/my-track.mp3
+   کاور: assets/img/my-track.jpg */</pre>
+    </div>
+    <div class="m-acts">
+      <button class="btn btn-ghost btn-sm" id="exportCm"><svg><use href="#i-download"/></svg> خروجی نظرها</button>
+      <button class="btn btn-ghost btn-sm" id="resetCm"><svg><use href="#i-trash"/></svg> پاک‌کردن نظرها</button>
+      <button class="btn btn-ghost btn-sm" id="resetAll"><svg><use href="#i-wand"/></svg> بازنشانی تنظیمات</button>
+    </div>
+    <div style="display:flex;justify-content:flex-end"><button class="btn btn-acc btn-sm" id="adminClose">بستن</button></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<noscript><div style="padding:120px 24px;text-align:center;color:#93939d">برای شنیدن ترک‌ها و ثبت نظر، جاوااسکریپت را فعال کن.</div></noscript>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
