@@ -1,5 +1,5 @@
 /* 4F — service worker: offline shell + audio cache */
-const V = '4f-v1';
+const V = '4f-v2';
 const SHELL = [
   './', './index.html', './manifest.webmanifest',
   './assets/css/style.css', './assets/js/data.js', './assets/js/app.js',

@@ -327,9 +327,10 @@
         </div>
       </div>`).join('');
 
-    waves.filter((w) => w.canvas.classList.contains('wave')).forEach((w) => {
-      const i = waves.indexOf(w); if (i > -1) waves.splice(i, 1);
-    });
+    for (let i = waves.length - 1; i >= 0; i--) {
+      const c = waves[i].canvas;
+      if (c.classList.contains('wave') && !c.isConnected) waves.splice(i, 1);
+    }
     $$('canvas[data-wave]').forEach((c) => registerWave(c, byId(c.dataset.wave)));
     syncPlayingUI();
   }
@@ -601,6 +602,7 @@
     if (old) waves.splice(waves.indexOf(old), 1);
     registerWave(w, t);
     renderDrawerComments();
+    drawer.scrollTop = 0;
     drawer.classList.add('open');
     scrim.classList.add('open');
     document.body.classList.add('lock');
@@ -741,7 +743,7 @@
 
   /* ---------- share ---------- */
   async function shareSite() {
-    const data = { title: '4F — چهار فرکانس، یک امضا', text: 'پنج ترک مستقل؛ بشنو، دانلود کن، نظر بده.', url: location.href };
+    const data = { title: (settings.name || '4F') + ' — ' + (settings.tag || 'چهار فرکانس، یک امضا'), text: 'پنج ترک مستقل؛ بشنو، دانلود کن، نظر بده.', url: location.href };
     try {
       if (navigator.share) { await navigator.share(data); return; }
       await navigator.clipboard.writeText(location.href);
@@ -853,6 +855,6 @@
     setTimeout(pinSetup, 400);
   }
   boot();
-  addEventListener('resize', () => { waves.filter((r) => r.canvas.isConnected === false); redrawWaves(); });
+  addEventListener('resize', () => redrawWaves());
   window.addEventListener('orientationchange', () => setTimeout(pinSetup, 300));
 })();
