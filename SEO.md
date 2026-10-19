@@ -18,13 +18,13 @@
 گوگل بدون تأیید مالکیت، سایت را به Search Console اضافه نمی‌کند. این مراحل را یک بار انجام بده:
 
 1. برو به <https://search.google.com/search-console> و با حساب گوگل خودت وارد شو.
-2. **Add property → URL prefix** و این را وارد کن: `https://drserver2350.github.io/felani4f/`
+2. **Add property → URL prefix** و این را وارد کن: `https://felani4f.github.io/`
 3. در بخش تأیید، روش **HTML tag** را انتخاب کن. چیزی شبیه این می‌بینی:
    `<meta name="google-site-verification" content="XXXXXXXX">`
    همان مقدار `XXXXXXXX` را برای من بفرست تا در `<head>` بگذارم و دوباره منتشر کنم.
    (روش دوم: فایل `googleXXXX.html` را دانلود کن و بفرست تا در ریشه‌ی مخزن بگذارم.)
 4. بعد از تأیید: **Sitemaps → Add sitemap** و این آدرس را ثبت کن:
-   `https://drserver2350.github.io/felani4f/sitemap.xml`
+   `https://felani4f.github.io/sitemap.xml`
 5. برای تسریع: در Search Console از **URL Inspection** آدرس اصلی را بگذار و **Request indexing** را بزن.
 
 ### بینگ (اختیاری، سریع‌تر جواب می‌دهد)

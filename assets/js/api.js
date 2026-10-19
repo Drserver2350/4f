@@ -15,7 +15,7 @@ const F4F = (() => {
   const EMPTY_CORE = () => ({ rev: 1, users: {}, downloads: {}, likes: {}, overrides: {}, extraTracks: [], banned: {}, settings: {} });
 
   const CFG = {
-    repo: 'Drserver2350/felani4f',
+    repo: 'felani4f/felani4f.github.io',
     branch: 'main',
     sessionDays: 30,
     pollMs: 20000,
