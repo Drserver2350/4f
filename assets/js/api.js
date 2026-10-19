@@ -20,10 +20,22 @@ const F4F = (() => {
     sessionDays: 30,
     pollMs: 20000,
   };
-  const ghConf = () => ({
-    repo: (LS.get('ghRepo', '') || CFG.repo).replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/, '').replace(/\/+$/, ''),
-    branch: LS.get('ghBranch', '') || CFG.branch,
-  });
+  /* a repo typed in the panel only counts while it matches the repo this
+     build was made for — after a domain/owner change a stale value would
+     silently publish to a dead path */
+  const cleanRepo = (v) => String(v || '').replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/, '').replace(/\/+$/, '').trim();
+  const ghConf = () => {
+    const stored = cleanRepo(LS.get('ghRepo', ''));
+    const storedFor = LS.get('ghRepoBase', '');
+    const repo = (stored && storedFor === CFG.repo) ? stored : CFG.repo;
+    return { repo, branch: LS.get('ghBranch', '') || CFG.branch };
+  };
+  function setGhRepo(v) {
+    const r = cleanRepo(v) || CFG.repo;
+    LS.set('ghRepo', r);
+    LS.set('ghRepoBase', CFG.repo);
+    return r;
+  }
 
   const state = { core: EMPTY_CORE(), comments: [], online: MODE === 'shared', loaded: false, session: null };
 
@@ -786,7 +798,7 @@ const F4F = (() => {
     addComment, deleteComment, commentsFor, commentCount, avgRating,
     incDownload, downloadsOf, totalDownloads, toggleLike, likeCount, iLiked,
     saveTrack, deleteTrack, restoreTrack, setUserRole, banUser, saveSettings, usersList, settings,
-    ghToken, setGhToken, publishTrack, publishContent, waitForPages, readId3, analyzeAudio, queuePublish, publishedTrackIds,
+    ghToken, setGhToken, ghConf, setGhRepo, publishTrack, publishContent, waitForPages, readId3, analyzeAudio, queuePublish, publishedTrackIds,
     ls: LS,
   };
 })();

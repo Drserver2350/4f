@@ -1314,7 +1314,7 @@
   /* publish tab */
   $('#saveToken').addEventListener('click', () => {
     F4F.setGhToken($('#ghToken').value);
-    F4F.ls.set('ghRepo', $('#ghRepo').value.trim());
+    if (F4F.setGhRepo) F4F.setGhRepo($('#ghRepo').value); else F4F.ls.set('ghRepo', $('#ghRepo').value.trim());
     F4F.ls.set('ghBranch', $('#ghBranch').value.trim());
     $('#pubState').textContent = 'ذخیره شد ✓';
     renderPubStatus();
