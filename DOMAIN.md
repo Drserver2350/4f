@@ -1,69 +1,30 @@
-# Felani4F — دامنه (تاریخچه‌ی مهاجرت)
+# Felani4F — دامنه
 
-> وضعیت: مخزن به سازمان `felani4f` منتقل شد. مرحله‌ی باقی‌مانده: تغییر نام مخزن به `felani4f.github.io` و فعال‌سازی دامنه از تنظیمات گیت‌هاب (چون توکن فعلی اجازه‌ی تغییر نام/ساخت مخزن در سازمان را ندارد).
-
-
-هدف: رسیدن از
+## وضعیت نهایی (انجام شد)
 
 ```
 https://felani4f.github.io/
 ```
 
-به
+- مخزن: `felani4f/felani4f.github.io` (سازمان: `felani4f`)
+- آدرس قدیمی `https://drserver2350.github.io/felani4f/` → **۴۰۴**؛ دیگر استفاده نکن.
+- همه‌ی آدرس‌های سئو به دامنه‌ی جدید تغییر کرده‌اند: `canonical`، `og:url`، `og:image`، `twitter:image`، JSON-LD، `sitemap.xml`، `robots.txt`، `credits.html`، README، SEO و `CFG.repo` در `assets/js/api.js`.
+- GitHub Pages روی `main /` فعال است و آخرین build سالم است.
+- سایت‌مپ برای هاست جدید به IndexNow (بینگ/یاندکس) ارسال شد.
 
-```
-https://felani4f.github.io/
-```
+## چرا Organization؟
 
-بدون خرید دامنه، بدون تغییر نام کاربری شخصی، و بدون از دست دادن محتوا یا تاریخچه‌ی گیت.
+آدرس ریشه‌ی `*.github.io` فقط وقتی در دسترس است که نام حساب/سازمان با نام دامنه یکی باشد. با سازمان `felani4f` و مخزن `felani4f.github.io`، سایت روی ریشه سرو می‌شود و نام کاربری شخصی (Drserver2350) هم دست‌نخورده می‌ماند.
 
-## چرا این مسیر؟
+## نکات مهم برای آینده
 
-آدرس سایت روی GitHub Pages از دو تکه ساخته می‌شود: نام حساب + نام مخزن.
-برای اینکه آدرس *ریشه* (`felani4f.github.io`) باشد، باید یک حساب یا سازمان به نام `felani4f` داشته باشیم و مخزن آن، دقیقاً `felani4f.github.io` نام بگیرد.
+1. **توکن پنل مدیریت**: `localStorage` به دامنه گره خورده است، پس بعد از تغییر دامنه توکن قبلی در سایت جدید وجود ندارد. یک‌بار در سایت جدید → پنل مدیریت → تب «انتشار فایل» توکن تازه را ذخیره کن (با Resource owner = `felani4f` و `Contents: Read and write`).
+2. **GitHub Actions**: توکن فعلی scope `workflow` ندارد؛ اگر روزی خواستی workflow اضافه کنی، توکن را با دسترسی `Workflows` بساز.
+3. **Search Console**: در [Search Console](https://search.google.com/search-console) یک property جدید با `https://felani4f.github.io/` بساز و سایت‌مپ را همان‌جا ثبت کن. برای property قبلی، آدرس جدید را به‌عنوان «Address change» معرفی کن تا انتقال سریع‌تر دیده شود.
+4. لینک‌های قدیمی در شبکه‌های اجتماعی/پروفایل‌ها را به آدرس جدید تغییر بده.
 
-سازمان (Organization) رایگان است و نام کاربری شخصی `Drserver2350` را دست نمی‌زند.
+## ابزارها
 
-## مرحله ۱ — ساخت سازمان (فقط با حساب خودت، ۳۰ ثانیه)
-
-1. این آدرس را باز کن: <https://github.com/account/organizations/new?plan=free>
-2. پلن **Free** را انتخاب کن.
-3. **Organization account name**: `felani4f`
-4. **Contact email**: ایمیل خودت (باید روی حساب گیت‌هاب تأیید شده باشد).
-5. «This organization belongs to: **My personal account**» را انتخاب کن و Create را بزن.
-
-> نام `felani4f` الان آزاد است (بررسی شد). چون نام‌های گیت‌هاب سراسری‌اند، اگر کسی زودتر بگیرد باید نام جایگزین (مثل `felani4f-music`) بگذاریم.
-
-## مرحله ۲ — بقیه با من
-
-بعد از ساختن سازمان، فقط بنویس «ساختم». من این کارها را انجام می‌دهم:
-
-1. انتقال مخزن `felani4f/felani4f.github.io` به سازمان (تاریخچه و کامیت‌ها کامل می‌آیند).
-2. تغییر نام مخزن به `felani4f.github.io` تا سایت روی ریشه سرو شود.
-3. فعال‌سازی/بازبینی GitHub Pages و صبر تا build.
-4. به‌روزرسانی همه‌ی آدرس‌های سئو با `tools/set-domain.py`:
-   `canonical`، `og:url`، `og:image`، `twitter:image`، JSON-LD (`@id`ها، `url`ها)، `sitemap.xml`، `robots.txt`، `credits.html`، `README.md`، `SEO.md` و `CFG.repo` در `assets/js/api.js`.
-5. تست زنده‌ی دسکتاپ و موبایل + بررسی این‌که آدرس قدیمی چه رفتاری دارد.
-6. ارسال دوباره‌ی سایت‌مپ به IndexNow برای هاست جدید.
-
-## مرحله ۳ — توکن انتشار (فقط برای پنل مدیریت)
-
-توکن فعلی محدود به مخزنی است که به سازمان منتقل می‌شود، پس برای انتشار ترک‌های جدید یک توکن تازه لازم است:
-
-1. <https://github.com/settings/tokens?type=beta> → **Generate new token**
-2. **Resource owner**: `felani4f` (سازمان)
-3. **Repository access**: Only select repositories → `felani4f.github.io`
-4. **Permissions**: `Contents: Read and write` + `Pages: Read`
-5. توکن را کپی کن و در سایت → پنل مدیریت → تب «انتشار فایل» بچسبان و «ذخیره توکن» را بزن.
-
-## اگر این مسیر نشد
-
-- **تغییر نام کاربری** به `felani4f` (رایگان، فوری، ولی هویت گیت‌هاب عوض می‌شود).
-- **دامنه‌ی اختصاصی** `felani4f.com` (حدود ۱۰ تا ۱۲ یورو در سال؛ تمیزترین نتیجه و مستقل از گیت‌هاب).
-
-## نکته‌ی سئو
-
-بعد از تغییر دامنه:
-
-- در [Search Console](https://search.google.com/search-console) یک property جدید با آدرس `https://felani4f.github.io/` بساز و همان سایت‌مپ را ثبت کن.
-- لینک‌های قدیمی که در اینستاگرام/تلگرام گذاشته‌ای را (اگر جایی هست) به آدرس جدید تغییر بده یا از یک صفحه‌ی واسط که به آدرس جدید ریدایرکت می‌کند استفاده کن.
+- `tools/set-domain.py` — بازنویسی یکجای همه‌ی آدرس‌ها (با `--dry` برای پیش‌نمایش).
+- `tools/migrate-to-org.py` — انتقال مخزن به سازمان (تاریخچه‌ی این مهاجرت).
+- `tools/finish-domain.py` — چک‌لیست خودکار: پیدا کردن مخزن، بررسی Pages، بازنویسی آدرس‌ها، پوش، صبر برای build و تست لینک‌ها.
